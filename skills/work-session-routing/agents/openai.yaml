@@ -1,0 +1,4 @@
+interface:
+  display_name: "Work Session Routing"
+  short_description: "Routes work start and wrap-up through Superpowers."
+  default_prompt: "Route this work session start or wrap-up through current-branch vs main/master-based worktree rules."
