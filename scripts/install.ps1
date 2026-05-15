@@ -270,6 +270,17 @@ function Install-GlobalAgentsHook() {
   Copy-Item -LiteralPath $source -Destination $dest -Force
 }
 
+function Install-CodexAgentsGuidance() {
+  Step "Install Codex AGENTS guidance"
+  $source = Join-Path $RepoRoot "templates\AGENTS.codex.md"
+  $dest = Join-Path $CodexHome "AGENTS.md"
+  if (Test-Path -LiteralPath $dest) {
+    $backup = "$dest.backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+    Copy-Item -LiteralPath $dest -Destination $backup -Force
+  }
+  Copy-Item -LiteralPath $source -Destination $dest -Force
+}
+
 function Verify-Install() {
   Step "Verify install"
   python -c "import tomllib, pathlib; tomllib.loads(pathlib.Path(r'$ConfigPath').read_text(encoding='utf-8')); print('config.toml valid')"
@@ -305,4 +316,5 @@ Install-GStackRepo
 Link-GStackSkills
 Install-CustomSkill
 Install-GlobalAgentsHook
+Install-CodexAgentsGuidance
 Verify-Install
