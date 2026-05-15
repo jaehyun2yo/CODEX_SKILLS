@@ -1,0 +1,4 @@
+interface:
+  display_name: "Superpowers Compound Review Loop"
+  short_description: "Run Compound learning after Superpowers review cycles"
+  default_prompt: "After a Superpowers review cycle, capture mistakes and lessons with Compound Engineering."
