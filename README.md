@@ -102,6 +102,22 @@ vendored Superpowers, gstack, Compound Engineering skill 파일을 직접 수정
 - `superpowers-compound-review-loop` skill 존재 여부
 - Compound Engineering agents 존재 여부
 
+## Windows 설치 메모
+
+설치 스크립트는 Windows PowerShell 환경에서 반복 실행해도 동작하도록 설계합니다.
+
+- `~/.codex/config.toml`은 Python `tomllib` 검증을 통과해야 하므로 BOM 없는
+  UTF-8로 저장합니다.
+- 기존 `~/.codex/config.toml`에 깨진 프로젝트 trust 항목이 있으면 설치 전
+  TOML 파싱이 실패할 수 있습니다. 이 경우 파일을 백업한 뒤 손상된
+  `[projects...]` 블록만 제거하고 다시 실행합니다.
+- Compound Engineering이 이미 설치되어 있으면 `bunx` 재설치 단계를
+  건너뜁니다.
+- gstack 전체 build가 Windows/Bun 제한으로 실패할 수 있습니다. 이 경우
+  설치 스크립트가 Windows-compatible fallback build를 실행합니다.
+- 기존 junction을 교체할 때 PowerShell `Remove-Item`이 실패할 수 있어
+  스크립트는 .NET directory delete fallback을 사용합니다.
+
 ## 운영 흐름
 
 일반적인 비 trivial 작업은 아래 순서로 진행합니다.
