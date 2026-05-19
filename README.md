@@ -82,6 +82,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
 ```text
 skills/global-orchestrator/
 skills/superpowers-compound-review-loop/
+projects/yjlaser/
 templates/AGENTS.global.md
 templates/AGENTS.codex.md
 scripts/install.ps1
@@ -117,6 +118,38 @@ vendored Superpowers, gstack, Compound Engineering skill 파일을 직접 수정
   설치 스크립트가 Windows-compatible fallback build를 실행합니다.
 - 기존 junction을 교체할 때 PowerShell `Remove-Item`이 실패할 수 있어
   스크립트는 .NET directory delete fallback을 사용합니다.
+
+## 프로젝트별 어댑터
+
+글로벌 하네스는 모든 프로젝트에 공통으로 적용됩니다. 프로젝트별로 필요한
+검증 명령, 위험 작업, 문서 로딩 순서는 `projects/<project-name>/` 아래에
+어댑터로 보관합니다.
+
+현재 포함된 프로젝트 어댑터:
+
+```text
+projects/yjlaser/
+  AGENTS.md
+  docs/agent-workflow.md
+  docs/context-map.md
+  docs/risk-gates.md
+  docs/verification-matrix.md
+```
+
+YJLaser 프로젝트에 적용하려면 저장소 루트에서 아래 파일들을 복사합니다.
+
+```powershell
+$skills = "C:\Users\<사용자>\OneDrive\Desktop\dev\projects\CODEX_SKILLS"
+$project = "C:\Users\<사용자>\OneDrive\Desktop\dev\projects\yjlaser"
+
+Copy-Item "$skills\projects\yjlaser\AGENTS.md" "$project\AGENTS.md" -Force
+New-Item -ItemType Directory -Force "$project\docs" | Out-Null
+Copy-Item "$skills\projects\yjlaser\docs\*.md" "$project\docs" -Force
+```
+
+프로젝트 어댑터는 글로벌 워크플로우를 대체하지 않습니다. 글로벌
+`global-orchestrator`가 공통 절차를 담당하고, 프로젝트 어댑터는 해당
+프로젝트에서 어떤 문서를 읽고 어떤 검증/위험 게이트를 적용할지 알려줍니다.
 
 ## 운영 흐름
 
