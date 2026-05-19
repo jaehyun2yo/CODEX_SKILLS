@@ -1,5 +1,27 @@
 # Global AGENTS.md
 
+## Global Workflow Orchestrator
+
+At the start of every user task, apply the `global-orchestrator` skill before
+planning, editing, running tests, or asking broad follow-up questions.
+
+The orchestrator is the common workflow harness for all projects:
+
+- inspect prompt quality and missing context first;
+- default to full orchestration for non-trivial work;
+- use brainstorming for unclear, product, design, architecture, behavior, or
+  multi-step work;
+- move approved designs into planning before implementation;
+- run implementation, verification, independent review, learning capture, and
+  final reporting in that order;
+- treat fast path as an exception that always requires user approval;
+- block fast path for risky work such as production data, secrets, deploys,
+  migrations, destructive changes, real external API side effects, billing, or
+  user/customer communications.
+
+If another skill also applies, use `global-orchestrator` first to choose the
+route, then invoke the more specific skill.
+
 ## Mandatory Developer / Reviewer Separation
 
 For non-trivial planning or implementation work, development and review must be

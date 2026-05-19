@@ -248,15 +248,21 @@ function Link-GStackSkills() {
   }
 }
 
-function Install-CustomSkill() {
-  Step "Install custom Superpowers compound review loop"
-  $source = Join-Path $RepoRoot "skills\superpowers-compound-review-loop"
-  $dest = Join-Path $CodexSkills "superpowers-compound-review-loop"
-  if (Test-Path -LiteralPath $dest) {
-    Remove-Item -LiteralPath $dest -Recurse -Force
+function Install-CustomSkills() {
+  Step "Install custom skills"
+  $sourceRoot = Join-Path $RepoRoot "skills"
+  foreach ($dir in Get-ChildItem -LiteralPath $sourceRoot -Directory) {
+    if (-not (Test-Path -LiteralPath (Join-Path $dir.FullName "SKILL.md"))) {
+      continue
+    }
+
+    $dest = Join-Path $CodexSkills $dir.Name
+    if (Test-Path -LiteralPath $dest) {
+      Remove-Item -LiteralPath $dest -Recurse -Force
+    }
+    Ensure-Dir (Split-Path -Parent $dest)
+    Copy-Item -LiteralPath $dir.FullName -Destination $dest -Recurse -Force
   }
-  Ensure-Dir (Split-Path -Parent $dest)
-  Copy-Item -LiteralPath $source -Destination $dest -Recurse -Force
 }
 
 function Install-GlobalAgentsHook() {
@@ -288,6 +294,7 @@ function Verify-Install() {
   $required = @(
     (Join-Path $CodexSkills "ce-compound\SKILL.md"),
     (Join-Path $CodexSkills "gstack-review\SKILL.md"),
+    (Join-Path $CodexSkills "global-orchestrator\SKILL.md"),
     (Join-Path $CodexSkills "superpowers-compound-review-loop\SKILL.md"),
     (Join-Path $CodexHome "agents\compound-engineering")
   )
@@ -314,7 +321,7 @@ Register-Marketplaces
 Install-CompoundEngineering
 Install-GStackRepo
 Link-GStackSkills
-Install-CustomSkill
+Install-CustomSkills
 Install-GlobalAgentsHook
 Install-CodexAgentsGuidance
 Verify-Install

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Global Orchestrator"
+  short_description: "Run the shared intake, planning, review, and learning workflow."
+  default_prompt: "Use the global orchestrator workflow to clarify, plan, execute, verify, review, and capture lessons."

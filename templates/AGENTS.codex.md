@@ -21,6 +21,19 @@ Tool mapping:
 - ExitPlanMode: ignore
 <!-- END COMPOUND CODEX TOOL MAP -->
 
+## Global Workflow Orchestrator
+
+At the start of every user task, apply the `global-orchestrator` skill before
+planning, editing, running tests, or asking broad follow-up questions.
+
+Default to the full workflow:
+
+`intake → prompt-quality-check → clarify/brainstorm → plan → execute → verify → review → compound/learning → final`
+
+Fast path is allowed only when the work is small, low-risk, clear, and local,
+and only after asking the user for approval. If the user does not approve fast
+path, use the full workflow. Risky work never uses fast path.
+
 ## Mandatory Workflow Role Separation
 
 Development and review must be separate for non-trivial work.
