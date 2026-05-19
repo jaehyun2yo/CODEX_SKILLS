@@ -45,27 +45,54 @@ must include:
 - risk gates
 - documentation or learning updates
 
-## 5. Execute
+## 5. Recommend Plan Review
+
+Before implementation, recommend the GStack plan review that best matches the
+work. Ask for approval before running it.
+
+Recommendation wording:
+
+```text
+추천하는 계획 리뷰는 `<skill>`입니다. 이유는 <reason>입니다.
+이 리뷰를 먼저 진행할까요?
+```
+
+Use:
+
+- `gstack-plan-eng-review` for implementation, architecture, backend, tests,
+  reliability, refactors, data flow.
+- `gstack-plan-design-review` for UI/UX, visual design, user flow, interaction.
+- `gstack-plan-devex-review` for setup, install, CLI, local development, CI,
+  release, test ergonomics.
+- `gstack-plan-ceo-review` for product scope, business priority, sequencing,
+  user value.
+- `gstack-autoplan` for broad, high-risk, ambiguous, cross-cutting work that
+  needs multiple lenses.
+
+If the user declines, continue only after noting that the plan review was
+skipped by user choice.
+
+## 6. Execute
 
 Implement narrowly. Preserve unrelated user changes. Prefer existing project
 patterns over new abstractions.
 
-## 6. Verify
+## 7. Verify
 
 Run fresh checks that prove the claim being made. Partial checks prove only the
 part they cover. If verification cannot run, state why.
 
-## 7. Independent Review
+## 8. Independent Review
 
 Use a reviewer agent when allowed by the active platform and user instructions.
 If unavailable, run a separate review pass in the main thread and disclose the
 limitation.
 
-## 8. Compound Or Learning
+## 9. Compound Or Learning
 
 Capture durable lessons only when they would change a future run. Do not record
 generic advice or clean no-finding reviews.
 
-## 9. Final Report
+## 10. Final Report
 
 Lead with outcome, then evidence. Include skipped checks and remaining risks.

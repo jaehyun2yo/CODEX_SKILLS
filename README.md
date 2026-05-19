@@ -127,6 +127,7 @@ vendored Superpowers, gstack, Compound Engineering skill 파일을 직접 수정
 → 프롬프트 품질/모호성/위험도 확인
 → 브레인스토밍 또는 사용자 승인 fast path
 → 계획 수립
+→ GStack 계획 리뷰 추천 및 사용자 승인
 → 구현
 → 검증
 → 별도 reviewer agent 검수 또는 fresh-context 리뷰
@@ -136,6 +137,22 @@ vendored Superpowers, gstack, Compound Engineering skill 파일을 직접 수정
 
 `global-orchestrator`는 이 순서를 공통 하네스로 강제합니다. 작은 작업은
 fast path로 처리할 수 있지만, 매번 사용자 승인을 먼저 받아야 합니다.
+
+계획이 필요한 작업에서는 구현 전에 가장 적합한 GStack 계획 리뷰를 추천하고
+사용자 승인을 받습니다.
+
+```text
+추천하는 계획 리뷰는 `<skill>`입니다. 이유는 <reason>입니다.
+이 리뷰를 먼저 진행할까요?
+```
+
+기본 매핑은 다음과 같습니다.
+
+- `gstack-plan-eng-review`: 구현, 아키텍처, 백엔드, 데이터 흐름, 테스트, 리팩토링
+- `gstack-plan-design-review`: UI/UX, 레이아웃, 사용자 흐름, 디자인 시스템
+- `gstack-plan-devex-review`: 설치, 로컬 개발, CLI, 테스트/CI, 릴리스 흐름
+- `gstack-plan-ceo-review`: 제품 범위, 우선순위, 사용자 가치, 작업 순서
+- `gstack-autoplan`: 범위가 넓거나 위험도가 높아 여러 관점 리뷰가 필요한 작업
 
 Superpowers 리뷰 사이클에서 실제 문제가 발견되거나 재사용할 교훈이 생기면
 `superpowers-compound-review-loop`가 Compound Engineering의 `ce-compound`

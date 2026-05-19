@@ -12,6 +12,8 @@ The orchestrator is the common workflow harness for all projects:
 - use brainstorming for unclear, product, design, architecture, behavior, or
   multi-step work;
 - move approved designs into planning before implementation;
+- after drafting a non-trivial plan, recommend the most relevant GStack plan
+  review skill and ask the user before running it;
 - run implementation, verification, independent review, learning capture, and
   final reporting in that order;
 - treat fast path as an exception that always requires user approval;
@@ -21,6 +23,11 @@ The orchestrator is the common workflow harness for all projects:
 
 If another skill also applies, use `global-orchestrator` first to choose the
 route, then invoke the more specific skill.
+
+Plan review recommendation wording:
+
+> 추천하는 계획 리뷰는 `<skill>`입니다. 이유는 <reason>입니다.
+> 이 리뷰를 먼저 진행할까요?
 
 ## Mandatory Developer / Reviewer Separation
 

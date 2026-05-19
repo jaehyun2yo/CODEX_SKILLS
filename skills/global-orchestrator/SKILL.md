@@ -24,6 +24,8 @@ intake
   -> prompt-quality-check
   -> clarify-or-brainstorm
   -> plan
+  -> recommend-plan-review
+  -> user-approved-plan-review
   -> execute
   -> verify
   -> independent-review
@@ -96,6 +98,8 @@ Use existing skills rather than duplicating them:
 
 - New feature, behavior change, unclear request: Superpowers brainstorming.
 - Approved design moving to implementation: Superpowers writing-plans.
+- Before implementing a non-trivial plan: recommend a GStack plan review and
+  ask for approval.
 - Bug or failing test: Superpowers systematic-debugging or GStack investigate.
 - Test-first feature or bug fix: Superpowers test-driven-development.
 - UI/web QA: GStack qa/qa-only or Compound frontend/design review skills.
@@ -108,10 +112,39 @@ Use existing skills rather than duplicating them:
 Project-specific adapters may refine this routing with exact commands and
 risk lists.
 
+## Plan Review Recommendation Gate
+
+After a plan is drafted and before implementation, recommend the most relevant
+GStack plan review skill. Do not run it automatically. Ask the user first.
+
+Use this wording:
+
+```text
+추천하는 계획 리뷰는 `<skill>`입니다. 이유는 <reason>입니다.
+이 리뷰를 먼저 진행할까요?
+```
+
+Choose:
+
+- `gstack-plan-eng-review`: implementation, architecture, backend, data flow,
+  tests, reliability, or refactoring risk.
+- `gstack-plan-design-review`: UI/UX, layout, visual hierarchy, interaction,
+  design system, or user flow risk.
+- `gstack-plan-devex-review`: setup, install, CLI, local development, test
+  ergonomics, CI, release, or contributor workflow risk.
+- `gstack-plan-ceo-review`: product scope, business priority, user value,
+  sequencing, or opportunity-cost risk.
+- `gstack-autoplan`: broad, ambiguous, high-risk, cross-cutting, or multi-review
+  work where several lenses are needed.
+
+If the work is fast-path approved, simple documentation, typo-only, or a small
+read-only task, state that plan review is not recommended and why.
+
 ## Execution Rules
 
 - Do not implement while requirements are materially unclear.
 - Do not skip brainstorming for non-trivial feature or behavior changes.
+- Do not run a non-trivial plan review without user approval.
 - Do not claim completion without fresh verification evidence.
 - Do not be the sole final reviewer of non-trivial work.
 - Preserve user changes in the working tree.

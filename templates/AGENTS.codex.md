@@ -28,7 +28,13 @@ planning, editing, running tests, or asking broad follow-up questions.
 
 Default to the full workflow:
 
-`intake → prompt-quality-check → clarify/brainstorm → plan → execute → verify → review → compound/learning → final`
+`intake → prompt-quality-check → clarify/brainstorm → plan → recommend-plan-review → user-approved-plan-review → execute → verify → review → compound/learning → final`
+
+After drafting a non-trivial plan, recommend the most relevant GStack plan
+review skill and ask the user before running it:
+
+> 추천하는 계획 리뷰는 `<skill>`입니다. 이유는 <reason>입니다.
+> 이 리뷰를 먼저 진행할까요?
 
 Fast path is allowed only when the work is small, low-risk, clear, and local,
 and only after asking the user for approval. If the user does not approve fast
