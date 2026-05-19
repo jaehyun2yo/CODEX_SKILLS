@@ -13,11 +13,11 @@ function Step($Message) {
   Write-Host "==> $Message"
 }
 
-function Run($File, [string[]]$Args, [switch]$AllowFailure) {
-  & $File @Args
+function Run($File, [string[]]$CommandArgs, [switch]$AllowFailure) {
+  & $File @CommandArgs
   $code = $LASTEXITCODE
   if ($code -ne 0 -and -not $AllowFailure) {
-    throw "$File $($Args -join ' ') failed with exit code $code"
+    throw "$File $($CommandArgs -join ' ') failed with exit code $code"
   }
   return $code
 }
@@ -32,6 +32,10 @@ function Ensure-Dir($Path) {
   New-Item -ItemType Directory -Path $Path -Force | Out-Null
 }
 
+function Write-Utf8NoBom($Path, $Content) {
+  [System.IO.File]::WriteAllText($Path, $Content, [System.Text.UTF8Encoding]::new($false))
+}
+
 function Set-DirJunction($Target, $Link) {
   if (-not (Test-Path -LiteralPath $Target)) {
     Write-Warning "Missing target, skipping junction: $Target"
@@ -41,7 +45,11 @@ function Set-DirJunction($Target, $Link) {
   if (Test-Path -LiteralPath $Link) {
     $item = Get-Item -LiteralPath $Link -Force
     if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
-      Remove-Item -LiteralPath $Link -Force
+      try {
+        Remove-Item -LiteralPath $Link -Recurse -Force
+      } catch {
+        [System.IO.Directory]::Delete($Link)
+      }
     } else {
       Write-Warning "Existing non-link path, skipping: $Link"
       return
@@ -65,7 +73,7 @@ function Copy-File($Source, $Destination) {
 function Ensure-TomlEnabledTable($TableName) {
   Ensure-Dir $CodexHome
   if (-not (Test-Path -LiteralPath $ConfigPath)) {
-    Set-Content -LiteralPath $ConfigPath -Value "" -Encoding utf8
+    Write-Utf8NoBom $ConfigPath ""
   }
 
   $content = Get-Content -LiteralPath $ConfigPath -Raw
@@ -90,7 +98,7 @@ function Ensure-TomlEnabledTable($TableName) {
     $content += "`n$header`nenabled = true`n"
   }
 
-  Set-Content -LiteralPath $ConfigPath -Value $content -Encoding utf8
+  Write-Utf8NoBom $ConfigPath $content
 }
 
 function Register-Marketplaces() {
@@ -104,6 +112,13 @@ function Register-Marketplaces() {
 
 function Install-CompoundEngineering() {
   Step "Install Compound Engineering agents"
+  $existingSkill = Join-Path $CodexSkills "ce-compound\SKILL.md"
+  $existingAgents = Join-Path $CodexHome "agents\compound-engineering"
+  if ((Test-Path -LiteralPath $existingSkill) -and (Test-Path -LiteralPath $existingAgents)) {
+    Write-Host "Compound Engineering already installed; skipping bunx install"
+    return
+  }
+
   Run "bunx" @("@every-env/compound-plugin", "install", "compound-engineering", "--to", "codex") | Out-Null
 
   $cePlugin = Join-Path $CodexHome ".tmp\marketplaces\compound-engineering-plugin\plugins\compound-engineering"
